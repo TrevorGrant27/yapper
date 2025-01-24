@@ -1,8 +1,34 @@
 import { NextResponse } from 'next/server';
 
 const PROMPTS = {
+  // Instagram prompts
+  'instagram-transcripts': "Transform this long transcript into a concise, engaging Instagram post that captures attention:",
+  'instagram-captions': "Create an engaging Instagram caption from this Reel script or image description that drives engagement:",
+  'instagram-notes': "Convert these personal notes into a shareable Instagram moment that resonates with followers:",
+  'instagram-hashtags': "Generate trendy and relevant Instagram hashtags for this written content:",
+  'instagram-trending': "Transform this text transcript into trending Instagram hashtags that increase visibility:",
+  
+  // LinkedIn prompts
+  'linkedin-blog': "Convert this blog post into an inspirational, professional LinkedIn post that provides value:",
+  'linkedin-ideas': "Transform these ideas into thought-provoking LinkedIn posts that spark professional discussion:",
+  'linkedin-transcript': "Extract and refine the most salient 500 words from this transcript for a LinkedIn post:",
+  'linkedin-articles': "Convert this article into a professional LinkedIn post that maintains expertise:",
+  'linkedin-thoughts': "Transform these scattered thoughts into an engaging, cohesive LinkedIn post:",
+  
+  // Marketing prompts
+  'marketing-announcements': "Convert these notes into a compelling product announcement that drives interest:",
+  'marketing-cta': "Transform this call-to-action into an engaging, actionable style that converts:",
+  'marketing-email': "Convert this rough outline into a strategic email sequence that nurtures leads:",
+  'marketing-summary': "Create a concise, powerful summary of these multiple calls-to-action:",
+  'marketing-essays': "Transform these Twitter calls-to-action into persuasive, clickable essays:",
+  
+  // Podcast prompts
+  'podcast-insights': "Distill these podcast insights into clear, concise takeaways that provide value:",
+  'podcast-notes': "Convert these transcripts and notes into audience-tailored podcast show notes:",
+  'podcast-intros': "Transform this podcast transcript into an engaging intro snippet that hooks listeners:",
+  'podcast-titles': "Create attention-grabbing titles from this in-depth podcast content:",
+  'podcast-summaries': "Generate an engaging episode summary from this podcast content that drives interest:",
   contrarian: "Transform this article into a contrarian, punchy tweet that challenges conventional wisdom while maintaining credibility:",
-  podcast: "Convert this podcast transcript into an engaging promotional tweet that captures the key insight and drives listener interest:",
   thread: "Create a conversational yet authoritative Twitter thread from this transcript, maintaining expertise while being approachable:",
   newsletter: "Transform this newsletter content into a series of connected, engaging tweets that maintain the core message:",
   general: "Convert this text into a tweet-friendly format that's engaging and shareable:"
@@ -36,7 +62,7 @@ export async function POST(request: Request) {
     try {
       console.log('Making API request to Deepseek...');
       const requestBody = {
-        model: 'deepseek-chat',
+        model: 'deepseek-reasoner',
         messages: [
           {
             role: 'system',
@@ -51,6 +77,9 @@ export async function POST(request: Request) {
         max_tokens: 500
       };
       console.log('Request body:', JSON.stringify(requestBody, null, 2));
+
+      // Double-check it in the logs:
+      console.log("Using the following model for request:", requestBody.model);
 
       const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
         method: 'POST',

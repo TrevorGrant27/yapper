@@ -4,25 +4,92 @@ import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 const pages = {
-  'contrarian': {
-    title: 'Converts an article into contrarian, punchy tweet.',
-    description: 'Transform any article into an attention-grabbing, contrarian tweet that stands out.',
+  // Instagram pages
+  'instagram-transcripts': {
+    title: 'Long transcripts into snappy Instagram posts',
+    description: 'Transform lengthy transcripts into engaging, concise Instagram posts that capture attention.',
   },
-  'podcast': {
-    title: 'Converting podcast transcripts into engaging promotional tweets.',
-    description: 'Turn your podcast transcripts into compelling tweets that drive listener engagement.',
+  'instagram-captions': {
+    title: 'Writes Instagram captions from Reel scripts or image descriptions/context',
+    description: 'Create compelling captions for your Reels and images that drive engagement.',
   },
-  'thread': {
-    title: 'Conversational, authoritative Twitter thread from transcript',
-    description: 'Create engaging Twitter threads that maintain authority while being conversational.',
+  'instagram-notes': {
+    title: 'Personal notes into shareable Instagram moments',
+    description: 'Convert your personal notes into Instagram-worthy content that resonates with your audience.',
   },
-  'newsletter': {
-    title: 'Converting newsletter to a series of tweets.',
-    description: 'Transform your newsletter content into a series of connected, engaging tweets.',
+  'instagram-hashtags': {
+    title: 'Written content into trendy Instagram hashtags',
+    description: 'Generate relevant and trending hashtags to increase your content visibility.',
   },
-  'general': {
-    title: 'Converts any text to a tweet.',
-    description: 'Quick and simple way to convert any text into a tweet-friendly format.',
+  'instagram-trending': {
+    title: 'Text transcripts into trending Instagram hashtags',
+    description: 'Transform your transcripts into popular hashtags that boost your reach.',
+  },
+
+  // LinkedIn pages
+  'linkedin-blog': {
+    title: 'Converting blog to inspirational professional LinkedIn post',
+    description: 'Transform your blog content into engaging LinkedIn posts that inspire professionals.',
+  },
+  'linkedin-ideas': {
+    title: 'Converting ideas into thought-provoking LinkedIn posts',
+    description: 'Turn your ideas into compelling LinkedIn content that sparks professional discussions.',
+  },
+  'linkedin-transcript': {
+    title: 'Extracts salient 500-word transcript excerpts for LinkedIn',
+    description: 'Extract and refine the most important parts of your transcript for LinkedIn.',
+  },
+  'linkedin-articles': {
+    title: 'Converts articles to professional LinkedIn posts',
+    description: 'Transform articles into LinkedIn-optimized content that maintains expertise.',
+  },
+  'linkedin-thoughts': {
+    title: 'Scattered thoughts into engaging LinkedIn posts',
+    description: 'Convert your thoughts into cohesive, professional LinkedIn content.',
+  },
+
+  // Marketing pages
+  'marketing-announcements': {
+    title: 'Converts notes into new product announcements',
+    description: 'Transform your notes into compelling product announcements that drive interest.',
+  },
+  'marketing-cta': {
+    title: 'This spiral converts calls to action into engaging, actionable styles',
+    description: 'Create powerful calls-to-action that convert and engage your audience.',
+  },
+  'marketing-email': {
+    title: 'Rough email sequence outline into strategic email sequences',
+    description: 'Convert rough outlines into strategic email sequences that nurture leads.',
+  },
+  'marketing-summary': {
+    title: 'Here is a 6 word summary for the spiral: Summarizing multiple calls-to-action to one',
+    description: 'Create concise, powerful summaries from multiple calls-to-action.',
+  },
+  'marketing-essays': {
+    title: 'Converting Twitter calls-to-action to clickable essays',
+    description: 'Transform Twitter CTAs into persuasive, long-form content.',
+  },
+
+  // Podcast pages
+  'podcast-insights': {
+    title: 'Distilling podcast insights into concise takeaways',
+    description: 'Extract valuable insights from your podcast into clear, actionable takeaways.',
+  },
+  'podcast-notes': {
+    title: 'Transcripts And Notes into Audience-Tailored Podcast Shownotes',
+    description: 'Convert your transcripts into engaging show notes that resonate with your audience.',
+  },
+  'podcast-intros': {
+    title: 'Converting pod transcripts to engaging intro snippets',
+    description: 'Create compelling podcast intros that hook your listeners from the start.',
+  },
+  'podcast-titles': {
+    title: 'In-depth podcast content into attention-grabbing titles',
+    description: 'Generate captivating titles that make your podcast stand out.',
+  },
+  'podcast-summaries': {
+    title: 'Generating engaging podcast episode summaries',
+    description: 'Create compelling episode summaries that drive listener interest.',
   },
 } as const;
 
