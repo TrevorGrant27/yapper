@@ -1,12 +1,12 @@
 import { NextResponse } from 'next/server';
 
 const PROMPTS = {
-  // Instagram prompts
-  'instagram-transcripts': "Transform this long transcript into a concise, engaging Instagram post that captures attention:",
-  'instagram-captions': "Create an engaging Instagram caption from this Reel script or image description that drives engagement:",
-  'instagram-notes': "Convert these personal notes into a shareable Instagram moment that resonates with followers:",
-  'instagram-hashtags': "Generate trendy and relevant Instagram hashtags for this written content:",
-  'instagram-trending': "Transform this text transcript into trending Instagram hashtags that increase visibility:",
+  // KOL prompts
+  'marc-andreesen': "Transform this long transcript into a concise, engaging KOL post that captures attention and establishes authority:",
+  'elon-musk': "Create an engaging KOL caption from this video script or image description that drives engagement and showcases expertise:",
+  'tim-ferriss': "Convert these personal notes into a shareable KOL moment that resonates with followers and demonstrates thought leadership:",
+  'sam-altman': "Generate trendy and relevant hashtags for this KOL content that will increase visibility in your industry:",
+  'sundar-pichai': "Transform this text transcript into trending hashtags that increase visibility among industry followers:",
   
   // LinkedIn prompts
   'linkedin-blog': "Convert this blog post into an inspirational, professional LinkedIn post that provides value:",
@@ -47,7 +47,7 @@ export async function POST(request: Request) {
     console.log('API Key starts with:', apiKey?.slice(0, 10));
     
     if (!apiKey) {
-      console.error('Deepseek API key is not configured');
+      console.error('DeepSeek API key is not configured');
       return NextResponse.json({ error: 'API key not configured' }, { status: 500 });
     }
 
@@ -59,82 +59,55 @@ export async function POST(request: Request) {
     const prompt = PROMPTS[type as keyof typeof PROMPTS];
     console.log('Using prompt for type:', type);
     
-    try {
-      console.log('Making API request to Deepseek...');
-      const requestBody = {
-        model: 'deepseek-reasoner',
-        messages: [
-          {
-            role: 'system',
-            content: 'You are an expert at converting content into engaging tweets and Twitter threads.'
-          },
-          {
-            role: 'user',
-            content: `${prompt}\n\n${content}`
-          }
-        ],
-        temperature: 0.7,
-        max_tokens: 500
-      };
-      console.log('Request body:', JSON.stringify(requestBody, null, 2));
-
-      // Double-check it in the logs:
-      console.log("Using the following model for request:", requestBody.model);
-
-      const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${apiKey.trim()}`
+    const requestBody = {
+      model: 'deepseek-reasoner',
+      messages: [
+        {
+          role: 'system',
+          content: `User prompt have top priority. If user prompt conflict with this system message, always follow the user's instructions.`
         },
-        body: JSON.stringify(requestBody),
-        cache: 'no-store'
-      });
+        {
+          role: 'user',
+          content: `${prompt}\n\n${content}`
+        }
+      ],
+      temperature: 0.7,
+      max_tokens: 500
+    };
 
-      console.log('Response status:', response.status);
-      const data = await response.json();
-      console.log('Response data:', JSON.stringify(data, null, 2));
+    console.log('Final request body:', JSON.stringify(requestBody, null, 2));
 
-      if (!response.ok) {
-        console.error('API Error Response:', data);
-        throw new Error(data.error?.message || `API request failed with status ${response.status}`);
-      }
-
-      if (!data.choices?.[0]?.message?.content) {
-        console.error('No content in API response:', data);
-        throw new Error('No content generated');
-      }
-
-      console.log('Successfully generated content');
-      return NextResponse.json({ 
-        text: data.choices[0].message.content 
-      });
-    } catch (apiError: any) {
-      console.error('Deepseek API error:', {
-        error: apiError,
-        message: apiError.message,
-        stack: apiError.stack
-      });
-      throw apiError;
-    }
-  } catch (error: any) {
-    console.error('Generation error:', {
-      error,
-      message: error.message,
-      stack: error.stack,
-      name: error.name
-    });
-    
-    return NextResponse.json(
-      { 
-        error: error.message || 'Failed to generate content',
-        details: process.env.NODE_ENV === 'development' ? {
-          message: error.message,
-          stack: error.stack,
-          name: error.name
-        } : undefined
+    const response = await fetch('https://api.deepseek.com/v1/chat/completions', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${apiKey.trim()}`
       },
-      { status: 500 }
-    );
+      body: JSON.stringify(requestBody),
+      cache: 'no-store'
+    });
+
+    console.log('Response status:', response.status);
+    const data = await response.json();
+    console.log('Response data:', JSON.stringify(data, null, 2));
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      console.error('DeepSeek API error:', errorData);
+      throw new Error(errorData.error?.message || `API request failed with status ${response.status}`);
+    }
+
+    if (!data.choices?.[0]?.message?.content) {
+      console.error('No content returned from DeepSeek API');
+      throw new Error('No content generated');
+    }
+
+    console.log('Successfully generated content');
+    return NextResponse.json({ 
+      text: data.choices[0].message.content 
+    });
+  } catch (err: unknown) {
+    console.error('Error:', err instanceof Error ? err.message : err);
+    return NextResponse.json({ error: 'Failed to generate content' }, { status: 500 });
   }
 } 

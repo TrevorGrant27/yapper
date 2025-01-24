@@ -18,11 +18,12 @@ const firebaseConfig = {
 
 if (!getApps().length) {
   firebaseApp = initializeApp(firebaseConfig);
+  auth = getAuth(firebaseApp);
+  db = getFirestore(firebaseApp);
 } else {
   firebaseApp = getApp();
+  auth = getAuth(firebaseApp);
+  db = getFirestore(firebaseApp);
 }
 
-auth = getAuth(firebaseApp);
-db = getFirestore(firebaseApp);
-
-export { firebaseApp, auth, db }; 
+export { auth, db }; 

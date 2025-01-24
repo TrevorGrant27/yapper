@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { useRouter } from 'next/navigation';
-import Image from 'next/image';
 import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../../../lib/firebase';
 import Cookies from 'js-cookie';
@@ -26,8 +25,9 @@ export default function LoginPage() {
             // Set the auth token in cookies
             Cookies.set('authToken', token, { expires: 7 }); // Expires in 7 days
             router.push('/');
-        } catch (err: any) {
-            setError(err.message || 'Failed to sign in');
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err.message : 'Failed to sign in';
+            setError(error);
         } finally {
             setLoading(false);
         }
@@ -141,7 +141,7 @@ export default function LoginPage() {
 
                 <div className="text-center">
                     <p className="text-sm text-gray-600">
-                        Don't have an account?{' '}
+                        Don&apos;t have an account?{' '}
                         <Link href="/auth/signup" className="font-medium text-indigo-600 hover:text-indigo-500">
                             Sign up
                         </Link>

@@ -1,29 +1,29 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 const pages = {
-  // Instagram pages
-  'instagram-transcripts': {
-    title: 'Long transcripts into snappy Instagram posts',
-    description: 'Transform lengthy transcripts into engaging, concise Instagram posts that capture attention.',
+  // KOL pages
+  'marc-andreesen': {
+    title: 'Article or transcript into a Marc Andreesen style tweet',
+    description: 'Transform lengthy or articles transcripts into engaging, concise Marc Andreesen style tweets that capture attention.',
   },
-  'instagram-captions': {
-    title: 'Writes Instagram captions from Reel scripts or image descriptions/context',
-    description: 'Create compelling captions for your Reels and images that drive engagement.',
+  'elon-musk': {
+    title: 'Article or transcript into a Elon Musk style tweet',
+    description: 'Transform lengthy or articles transcripts into engaging, concise Elon Musk style tweets that capture attention.',
   },
-  'instagram-notes': {
-    title: 'Personal notes into shareable Instagram moments',
-    description: 'Convert your personal notes into Instagram-worthy content that resonates with your audience.',
+  'tim-ferriss': {
+    title: 'Article or transcript into a Tim Ferriss style tweet',
+    description: 'Transform lengthy or articles transcripts into engaging, concise Tim Ferriss style tweets that capture attention.',
   },
-  'instagram-hashtags': {
-    title: 'Written content into trendy Instagram hashtags',
-    description: 'Generate relevant and trending hashtags to increase your content visibility.',
+  'sam-altman': {
+    title: 'Article or transcript into a Sam Altman style tweet',
+    description: 'Transform lengthy or articles transcripts into engaging, concise Sam Altman style tweets that capture attention.',
   },
-  'instagram-trending': {
-    title: 'Text transcripts into trending Instagram hashtags',
-    description: 'Transform your transcripts into popular hashtags that boost your reach.',
+  'sundar-pichai': {
+    title: 'Article or transcript into a Sundar Pichai style tweet',
+    description: 'Transform lengthy or articles transcripts into engaging, concise Sundar Pichai style tweets that capture attention.',
   },
 
   // LinkedIn pages
@@ -102,8 +102,13 @@ export default function CreatePage({ params }: { params: Promise<{ type: string 
   const resolvedParams = React.use(params);
   const pageInfo = pages[resolvedParams.type as keyof typeof pages];
 
+  useEffect(() => {
+    if (!pageInfo) {
+      router.push('/');
+    }
+  }, [pageInfo, router]);
+
   if (!pageInfo) {
-    router.push('/');
     return null;
   }
 
@@ -132,8 +137,9 @@ export default function CreatePage({ params }: { params: Promise<{ type: string 
       }
 
       setGeneratedText(data.text);
-    } catch (err: any) {
-      setError(err.message || 'Failed to generate content');
+    } catch (err: unknown) {
+      const error = err instanceof Error ? err.message : 'Failed to generate content';
+      setError(error);
     } finally {
       setLoading(false);
     }

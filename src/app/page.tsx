@@ -2,6 +2,10 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { signOut } from 'firebase/auth';
+import { auth } from '../../lib/firebase';
+import Cookies from 'js-cookie';
 
 interface Card {
   id: string;
@@ -23,6 +27,17 @@ interface Tab {
 
 const AppPage = () => {
   const [activeTab, setActiveTab] = useState('create');
+  const router = useRouter();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      Cookies.remove('authToken');
+      router.push('/auth');
+    } catch (error) {
+      console.error('Error signing out:', error);
+    }
+  };
 
   const tabs: Tab[] = [
     {
@@ -66,14 +81,14 @@ const AppPage = () => {
 
   const categories: Category[] = [
     {
-      id: 'instagram',
-      name: 'Instagram',
+      id: 'kol',
+      name: 'KOLs',
       cards: [
-        { id: 'long-transcripts', title: 'Long transcripts into snappy Instagram posts', route: '/create/instagram-transcripts' },
-        { id: 'reel-captions', title: 'Writes Instagram captions from Reel scripts or image descriptions/context', route: '/create/instagram-captions' },
-        { id: 'personal-notes', title: 'Personal notes into shareable Instagram moments', route: '/create/instagram-notes' },
-        { id: 'written-content', title: 'Written content into trendy Instagram hashtags', route: '/create/instagram-hashtags' },
-        { id: 'text-transcripts', title: 'Text transcripts into trending Instagram hashtags', route: '/create/instagram-trending' },
+        { id: 'Marc-Andreesen', title: 'Article or transcript into a Marc Andreesen style tweet', route: '/create/marc-andreesen' },
+        { id: 'Elon-Musk', title: 'Article or transcript into a Elon Musk style tweet', route: '/create/elon-musk' },
+        { id: 'Tim-Ferriss', title: 'Article or transcript into a Tim Ferriss style tweet', route: '/create/tim-ferriss' },
+        { id: 'Sam-Altman', title: 'Article or transcript into a Sam Altman style tweet', route: '/create/sam-altman' },
+        { id: 'Sundar-Pichai', title: 'Article or transcript into a Sundar Pichai style tweet', route: '/create/sundar-pichai' },
       ]
     },
     {
@@ -136,7 +151,10 @@ const AppPage = () => {
             ))}
           </nav>
           <div className="p-4 border-t">
-            <button className="flex items-center space-x-3 w-full px-4 py-2 text-left text-gray-600 hover:bg-gray-50 rounded-lg">
+            <button 
+              onClick={handleLogout}
+              className="flex items-center space-x-3 w-full px-4 py-2 text-left text-gray-600 hover:bg-gray-50 rounded-lg"
+            >
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
               </svg>

@@ -24,8 +24,9 @@ export default function SignUpPage() {
             const token = await userCredential.user.getIdToken();
             Cookies.set('authToken', token, { expires: 7 });
             router.push('/');
-        } catch (err: any) {
-            setError(err.message || 'Failed to sign up');
+        } catch (err: unknown) {
+            const error = err instanceof Error ? err.message : 'Failed to sign up';
+            setError(error);
         } finally {
             setLoading(false);
         }
