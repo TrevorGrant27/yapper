@@ -2,7 +2,7 @@ import { NextResponse } from 'next/server';
 
 const PROMPTS = {
   // KOL prompts
-  'marc-andreesen': "Transform this long transcript into a concise, engaging KOL post that captures attention and establishes authority:",
+  'marc-andreesen': "1. Read & Analyze\nExamine the content (article, transcript, etc.) provided below. Identify the most pivotal ideas, statements, or themes—especially those revealing broader trends in technology, markets, social impact, or disruptive innovation.\n2. Extract Key Insights\nPull out interesting or provocative points that hint at contrarian viewpoints, notable data, or forward-looking perspectives.\n3. Transform into Tweets (5 total)\n• Write each tweet with a bold, contrarian, and future-focused tone reminiscent of Marc Andreessen.\n• Center your commentary on technology, market disruption, and societal impact wherever possible.\n• Keep each tweet under 280 characters and no emojis\n4. Use a Punchy, Provocative Style\n• Incorporate any relevant data or facts from the source.\n• Tie them to big-picture ideas about innovation, investment, or the evolution of industries.\n5. Output Format\nPresent the final five tweets as a numbered list, each standing on its own with a concise, compelling message.",
   'elon-musk': "Create an engaging KOL caption from this video script or image description that drives engagement and showcases expertise:",
   'tim-ferriss': "Convert these personal notes into a shareable KOL moment that resonates with followers and demonstrates thought leadership:",
   'sam-altman': "Generate trendy and relevant hashtags for this KOL content that will increase visibility in your industry:",
